@@ -16,9 +16,35 @@ import java.util.List;
 public class FileHandling extends BaseIO {
 
 
-    // 提取英文常量
-    public final static String REGEX_ENGLISH = "[^a-zA-Z]+";
-    // 英语词性
+    /**
+     * 英文
+     */
+    public final static String REGEX_ENGLISH = "[a-zA-Z]+";
+    /**
+     * 非英文
+     */
+    public final static String REGEX_NOT_ENGLISH = "[^a-zA-Z]+";
+    /**
+     * 中文
+     */
+    public final static String REGEX_CHINESE = "[\\u4e00-\\u9fa5]";
+    /**
+     * 非中文
+     */
+    public final static String REGEX_NOT_CHINESE = "[^\\u4e00-\\u9fa5]";
+    /**
+     * 双字节字符（包含中文）
+     */
+    public final static String REGEX_SINGLE_BYTE_CHARACTERS = "[^\\x00-\\xff]";
+
+    /**
+     * 单字节字符
+     */
+    public final static String REGEX_DOUBLE_BYTE_CHARACTERS = "[\\x00-\\xff]";
+
+    /**
+     * 英文词性
+     */
     public final static String[] properties = {"prep", "pron", "n", "v", "conj", "s", "sc", "o", "oc", "vi", "vt",
             "aux", "adj", "adv", "art", "num", "int", "u", "c", "pl"};
 
@@ -82,7 +108,7 @@ public class FileHandling extends BaseIO {
      * @throws IOException
      */
     public static List<String> extractEnglishCharacterList(String path) throws IOException {
-        List<String> charList = extractCharacterList(path, FileHandling.REGEX_ENGLISH);
+        List<String> charList = extractCharacterList(path, FileHandling.REGEX_NOT_ENGLISH);
         //去掉词性
         charList.removeAll(Arrays.asList(properties));
         //删除长度为1的单词
