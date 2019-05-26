@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Harry
  */
-public class FileHandling extends BaseIO {
+public class FileContentOperateUtil extends BaseIO {
 
 
     /**
@@ -81,7 +81,7 @@ public class FileHandling extends BaseIO {
     public static String extractCharacterString(String path, String replaceStrRegex) throws IOException {
 
         // 读取原始文本
-        String originText = ReadFileUtil.readText(path);
+        String originText = readText(path);
         // 将非英文的文本替换成空格
         String newText = originText.replaceAll(replaceStrRegex, " ");
 
@@ -108,7 +108,7 @@ public class FileHandling extends BaseIO {
      * @throws IOException
      */
     public static List<String> extractEnglishCharacterList(String path) throws IOException {
-        List<String> charList = extractCharacterList(path, FileHandling.REGEX_NOT_ENGLISH);
+        List<String> charList = extractCharacterList(path, FileContentOperateUtil.REGEX_NOT_ENGLISH);
         //去掉词性
         charList.removeAll(Arrays.asList(properties));
         //删除长度为1的单词
@@ -126,7 +126,7 @@ public class FileHandling extends BaseIO {
 
         try {
             String content = extractEnglishCharacterString(fromPath);
-            WriteFileUtil.WriteToText(content, toPath);
+            WriteToText(content, toPath);
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -146,30 +146,27 @@ public class FileHandling extends BaseIO {
      * @return
      */
     public static boolean splitTxtFileContentHasLinefeed(String fromFilePath, String toDirectoryPath, int fileCount) {
-        BufferedReader buffReader = null;
-        BufferedWriter bufferedWriter = null;
-
-        try {
-            File originFile = new File(fromFilePath);
-            int fileContentLineNum = ReadFileUtil.getFileContentLineNum(originFile);
+        File originFile = new File(fromFilePath);
+        try (BufferedReader buffReader = new BufferedReader(new FileReader(originFile))) {
+            int fileContentLineNum = getFileContentLineNum(originFile);
             // 计算每个文本多少行
             int fileLineNum = fileContentLineNum % fileCount == 0 ? fileContentLineNum / fileCount
                     : fileContentLineNum / fileCount + 1;
 
-            buffReader = new BufferedReader(new FileReader(originFile));
 
             String str;
             for (int i = 1; i <= fileCount; i++) {
                 String fileName = toDirectoryPath
                         + originFile.getName().substring(0, originFile.getName().lastIndexOf(".")) + i + ".txt";
-                bufferedWriter = new BufferedWriter(new FileWriter(fileName));
-                for (int j = 1; j <= fileLineNum; j++) {
-                    if ((str = buffReader.readLine()) != null) {
-                        bufferedWriter.write(str + "\n");
-                    }
+                try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
+                    for (int j = 1; j <= fileLineNum; j++) {
+                        if ((str = buffReader.readLine()) != null) {
+                            bufferedWriter.write(str + "\n");
+                        }
 
+                    }
                 }
-                bufferedWriter.close();
+
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -177,8 +174,6 @@ public class FileHandling extends BaseIO {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        } finally {
-            close(buffReader);
         }
 
         return true;
@@ -188,21 +183,22 @@ public class FileHandling extends BaseIO {
 
     /**
      * 将一份txt文件拆分为多个txt文件,使用
-     * 此方法源文件可以午无换行
+     * 此方法源文件可以无换行
      *
      * @param fromFilePath    源文件路径
      * @param splitRegex      源文件词语分隔符
      * @param toDirectoryPath 存放新文件的目录
      * @param fileCount       要拆分为多少个
-     * @return
+     * @return 返回操作结果
      */
-    public static boolean splitTxtFileContentNoLinefeed(String fromFilePath, String splitRegex, String toDirectoryPath, int fileCount) {
+    public static boolean splitTxtFileContentNoLinefeed(String fromFilePath, String splitRegex, String
+            toDirectoryPath, int fileCount) {
 
         BufferedWriter buffwriter = null;
 
         try {
             File originFile = new File(fromFilePath);
-            List<String> charList = ReadFileUtil.readTextToList(originFile, splitRegex);
+            List<String> charList = readTextToList(originFile, splitRegex);
 
             int wordCount = charList.size();
             // 计算每个文本多少个单词
@@ -231,6 +227,131 @@ public class FileHandling extends BaseIO {
             return false;
         }
         return true;
+
+    }
+
+    /**
+     * 向文本中写入内容
+     *
+     * @param content 要写入的内容
+     * @param file    目标文件
+     * @throws IOException If an I/O error occurs
+     */
+    public static void writeToText(String content, File file) throws IOException {
+        if (file == null)
+            return;
+
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+            bw.write(content);
+        }
+
+    }
+
+    /**
+     * 向文本中写入内容
+     *
+     * @param content    要写入的内容
+     * @param targetPath 目标文件路径
+     * @throws IOException If an I/O error occurs
+     */
+    public static void WriteToText(String content, String targetPath) throws IOException {
+        File file = new File(targetPath);
+        writeToText(content, file);
+    }
+
+
+    /**
+     * 读取txt文件，返回字符串
+     *
+     * @param file 文件对象
+     * @return 文件内容
+     * @throws IOException
+     */
+    public static String readText(File file) throws IOException {
+        if (file == null) {
+            return null;
+        }
+        StringBuffer sb = new StringBuffer();
+        try (BufferedReader bufferReader = new BufferedReader(new FileReader(file))) {
+            String str;
+            while ((str = bufferReader.readLine()) != null) {
+                sb.append(str);
+            }
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 读取txt文件，返回字符串集合 需指定分割字符串规则
+     *
+     * @param file
+     * @param splitRegex
+     * @return
+     * @throws IOException
+     */
+    public static List<String> readTextToList(File file, String splitRegex) throws IOException {
+        String[] charArray = readText(file).split(splitRegex);
+        List<String> charList = new ArrayList<String>();
+        for (String string : charArray) {
+            charList.add(string);
+        }
+
+        return charList;
+    }
+
+    /**
+     * 读取txt文件，返回字符串
+     *
+     * @param path 文件路径
+     * @return 文件内容
+     * @throws IOException
+     */
+    public static String readText(String path) throws IOException {
+        File file = new File(path);
+        return readText(file);
+
+    }
+
+
+    /**
+     * 读取txt文件，返回字符串list集合
+     *
+     * @param path 文件路径
+     * @return 文件内容
+     * @throws IOException
+     */
+    public static List<String> readText(String path, String splitRegex) throws IOException {
+        File file = new File(path);
+        return readTextToList(file, splitRegex);
+
+    }
+
+
+    /**
+     * 获得文件内容的总行数
+     *
+     * @param file
+     * @return
+     * @throws IOException
+     */
+    public static int getFileContentLineNum(File file) throws IOException {
+
+        LineNumberReader lr = null;
+        try {
+            lr = new LineNumberReader(new FileReader(file));
+            lr.skip(Long.MAX_VALUE);
+        } catch (FileNotFoundException e) {
+            throw e;
+        } catch (IOException e) {
+            throw e;
+        } finally {
+            lr.close();
+        }
+        return lr.getLineNumber() + 1;
 
     }
 

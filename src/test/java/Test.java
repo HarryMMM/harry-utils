@@ -1,4 +1,4 @@
-import cn.harryai.toolkit.io.FileHandling;
+import cn.harryai.toolkit.io.FileContentOperateUtil;
 
 import java.io.IOException;
 
@@ -7,9 +7,9 @@ public class Test {
 		String or = "C:\\Users\\Harry\\Desktop\\JAVA语言常用英语汇总.txt";
 		String from = "C:\\Users\\Harry\\Desktop\\JAVA.txt";
 		String to = "C:\\Users\\Harry\\Desktop\\";
-		// FileHandling.extractEnglishToAnotherFile(or, from);
+		// FileContentOperateUtil.extractEnglishToAnotherFile(or, from);
 
-		if (FileHandling.splitTxtFileContentNoLinefeed(from, " ", to, 10)) {
+		if (FileContentOperateUtil.splitTxtFileContentNoLinefeed(from, " ", to, 10)) {
 			System.out.println("成功");
 		} else {
 			System.out.println("shibai");
