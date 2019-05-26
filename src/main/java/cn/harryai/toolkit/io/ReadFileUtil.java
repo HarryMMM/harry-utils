@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReadFile extends BaseIO {
+public class ReadFileUtil extends BaseIO {
 
     /**
      * 读取txt文件，返回字符串

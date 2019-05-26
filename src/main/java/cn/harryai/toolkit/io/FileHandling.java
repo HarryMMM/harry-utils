@@ -55,7 +55,7 @@ public class FileHandling extends BaseIO {
     public static String extractCharacterString(String path, String replaceStrRegex) throws IOException {
 
         // 读取原始文本
-        String originText = ReadFile.readText(path);
+        String originText = ReadFileUtil.readText(path);
         // 将非英文的文本替换成空格
         String newText = originText.replaceAll(replaceStrRegex, " ");
 
@@ -100,7 +100,7 @@ public class FileHandling extends BaseIO {
 
         try {
             String content = extractEnglishCharacterString(fromPath);
-            WriteFile.WriteToText(content, toPath);
+            WriteFileUtil.WriteToText(content, toPath);
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -125,7 +125,7 @@ public class FileHandling extends BaseIO {
 
         try {
             File originFile = new File(fromFilePath);
-            int fileContentLineNum = ReadFile.getFileContentLineNum(originFile);
+            int fileContentLineNum = ReadFileUtil.getFileContentLineNum(originFile);
             // 计算每个文本多少行
             int fileLineNum = fileContentLineNum % fileCount == 0 ? fileContentLineNum / fileCount
                     : fileContentLineNum / fileCount + 1;
@@ -176,14 +176,13 @@ public class FileHandling extends BaseIO {
 
         try {
             File originFile = new File(fromFilePath);
-            List<String> charList = ReadFile.readTextToList(originFile, splitRegex);
+            List<String> charList = ReadFileUtil.readTextToList(originFile, splitRegex);
 
             int wordCount = charList.size();
             // 计算每个文本多少个单词
             int fileLineNum = wordCount % fileCount == 0 ? wordCount / fileCount
                     : wordCount / fileCount + 1;
 
-            buffwriter = null;
             int index = 0;
             for (int i = 1; i <= fileCount; i++) {
                 String fileName = toDirectoryPath

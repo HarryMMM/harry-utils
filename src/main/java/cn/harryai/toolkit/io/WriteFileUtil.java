@@ -1,13 +1,16 @@
 package cn.harryai.toolkit.io;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * 向文本写入类
  *
  * @author Harry
  */
-public class WriteFile extends BaseIO {
+public class WriteFileUtil extends BaseIO {
 
     /**
      * 向文本中写入内容

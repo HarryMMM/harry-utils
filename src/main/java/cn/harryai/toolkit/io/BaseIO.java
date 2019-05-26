@@ -1,20 +1,17 @@
 package cn.harryai.toolkit.io;
 
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Closeable;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 
 /**
  * io工具基础类
  *
  * @author Harry
  */
-public class BaseIO {
+class BaseIO {
     private  static  final Logger LOGGER= LoggerFactory.getLogger(BaseIO.class);
 
     protected static void closeAll(Closeable... closeables) {
