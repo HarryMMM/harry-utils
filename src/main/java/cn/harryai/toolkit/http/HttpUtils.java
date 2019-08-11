@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class HttpUtil {
+public class HttpUtils {
 	
 	public final static String ARGS_TYPE_NAME_VALUE="nameValue";
 	public final static String ARGS_TYPE_JSON="json";

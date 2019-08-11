@@ -1,7 +1,7 @@
 package cn.harryai.toolkit.io;
 
 
-import cn.harryai.toolkit.collection.ListUtil;
+import cn.harryai.toolkit.collection.ListUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Harry
  */
-public class FileContentOperateUtil extends BaseIO {
+public class FileContentOperateUtils extends BaseIO {
 
 
     /**
@@ -97,7 +97,7 @@ public class FileContentOperateUtil extends BaseIO {
      */
     public static String extractEnglishCharacterString(String path) throws IOException {
 
-        return ListUtil.convertToString(extractEnglishCharacterList(path));
+        return ListUtils.convertToString(extractEnglishCharacterList(path));
     }
 
     /**
@@ -108,11 +108,11 @@ public class FileContentOperateUtil extends BaseIO {
      * @throws IOException
      */
     public static List<String> extractEnglishCharacterList(String path) throws IOException {
-        List<String> charList = extractCharacterList(path, FileContentOperateUtil.REGEX_NOT_ENGLISH);
+        List<String> charList = extractCharacterList(path, FileContentOperateUtils.REGEX_NOT_ENGLISH);
         //去掉词性
         charList.removeAll(Arrays.asList(properties));
         //删除长度为1的单词
-        return ListUtil.delectStrLengthOf(charList, 1);
+        return ListUtils.delectStrLengthOf(charList, 1);
     }
 
     /**

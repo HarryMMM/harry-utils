@@ -16,7 +16,7 @@ import java.util.Objects;
  *
  * @author Harry
  */
-public class FileOperateUtil {
+public class FileOperateUtils {
 
     /**
      * 文件下载

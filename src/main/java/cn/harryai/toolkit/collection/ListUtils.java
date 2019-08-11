@@ -3,7 +3,7 @@ package cn.harryai.toolkit.collection;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListUtil {
+public class ListUtils {
 	
 	
 	/**
