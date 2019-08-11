@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Harry
  */
-public class FileContentOperateUtils extends BaseIO {
+public class FileContentOperateUtils extends BaseIo {
 
 
     /**
@@ -45,7 +45,7 @@ public class FileContentOperateUtils extends BaseIO {
     /**
      * 英文词性
      */
-    public final static String[] properties = {"prep", "pron", "n", "v", "conj", "s", "sc", "o", "oc", "vi", "vt",
+    public final static String[] PROPERTIES = {"prep", "pron", "n", "v", "conj", "s", "sc", "o", "oc", "vi", "vt",
             "aux", "adj", "adv", "art", "num", "int", "u", "c", "pl"};
 
     /**
@@ -110,7 +110,7 @@ public class FileContentOperateUtils extends BaseIO {
     public static List<String> extractEnglishCharacterList(String path) throws IOException {
         List<String> charList = extractCharacterList(path, FileContentOperateUtils.REGEX_NOT_ENGLISH);
         //去掉词性
-        charList.removeAll(Arrays.asList(properties));
+        charList.removeAll(Arrays.asList(PROPERTIES));
         //删除长度为1的单词
         return ListUtils.delectStrLengthOf(charList, 1);
     }
@@ -126,7 +126,7 @@ public class FileContentOperateUtils extends BaseIO {
 
         try {
             String content = extractEnglishCharacterString(fromPath);
-            WriteToText(content, toPath);
+            writeToText(content, toPath);
         } catch (IOException e) {
 
             e.printStackTrace();
@@ -238,8 +238,9 @@ public class FileContentOperateUtils extends BaseIO {
      * @throws IOException If an I/O error occurs
      */
     public static void writeToText(String content, File file) throws IOException {
-        if (file == null)
+        if (file == null) {
             return;
+        }
 
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             bw.write(content);
@@ -254,7 +255,7 @@ public class FileContentOperateUtils extends BaseIO {
      * @param targetPath 目标文件路径
      * @throws IOException If an I/O error occurs
      */
-    public static void WriteToText(String content, String targetPath) throws IOException {
+    public static void writeToText(String content, String targetPath) throws IOException {
         File file = new File(targetPath);
         writeToText(content, file);
     }

@@ -3,6 +3,9 @@ package cn.harryai.toolkit.collection;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Harry
+ */
 public class ListUtils {
 	
 	

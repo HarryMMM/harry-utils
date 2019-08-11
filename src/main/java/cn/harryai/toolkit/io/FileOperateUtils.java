@@ -75,15 +75,21 @@ public class FileOperateUtils {
         for (int i = 0; i < len; i++) {
             String path = paths[i];
             builder.append(path);
-            if (i == len - 1) break;
+            if (i == len - 1) {
+                break;
+            }
             builder.append(File.separator);
         }
         return builder.toString();
     }
 
     public static void transfer(InputStream in, OutputStream out) throws IOException {
-        if (null == in) throw new NullPointerException("InputStream is null~");
-        if (null == out) throw new NullPointerException("OutputStream is null~");
+        if (null == in) {
+            throw new NullPointerException("InputStream is null~");
+        }
+        if (null == out) {
+            throw new NullPointerException("OutputStream is null~");
+        }
         int len;
         byte[] buffer = new byte[1024];
         while ((len = in.read(buffer)) != -1) {

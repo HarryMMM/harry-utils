@@ -11,8 +11,8 @@ import java.io.IOException;
  *
  * @author Harry
  */
-class BaseIO {
-    private  static  final Logger LOGGER= LoggerFactory.getLogger(BaseIO.class);
+class BaseIo {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BaseIo.class);
 
     protected static void closeAll(Closeable... closeables) {
         if (null == closeables || closeables.length == 0) {
