@@ -26,9 +26,9 @@ public class I18nUtils {
         }
     }
 
-    public static String getMessage(String key, String... parms) {
+    public static String getMessage(String key, Object... params) {
 
-        return MessageFormat.format(getMessage(key), parms);
+        return MessageFormat.format(getMessage(key), params);
     }
 
     public static void setBaseName(String baseName) {
