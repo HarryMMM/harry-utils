@@ -1,7 +1,6 @@
 package cn.harryai.toolkit.io;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -30,9 +29,8 @@ public class FileOperateUtils {
         FileUtils.forceMkdir(new File(downloadPath));
         try (FileInputStream fileInputStream = new FileInputStream(new File(concatPath(downloadPath, fileName)));
              ServletOutputStream outputStream = response.getOutputStream()) {
-            String extension = FilenameUtils.getName(fileName);
-            response.setContentType("multipart/form-data");
-            response.setHeader("Content-Disposition", String.format("attachment;fileName=%s", extension));
+            response.setContentType("application/octet-stream; charset=utf-8");
+            response.setHeader("Content-Disposition", String.format("attachment;fileName=%s", fileName));
             transfer(fileInputStream, outputStream);
         }
 
